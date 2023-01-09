@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通知测试</title>
+    <link rel="shortcut icon" href="https://haloged.github.io/haloged1/logo001.ico" type="image/x-icon">
+    <style>
+        .center{
+            text-align: center;
+        }
+    </style>
+    <script>
+        notify()
+function notify() {
+    if (!("Notification" in window)) {
+    alert("抱歉，此浏览器不支持桌面通知！");
+    }
+    Notification.requestPermission().then(function (result) {
+    if (result === "denied") {
+        console.log("用户拒绝");
+        return;
+    }
+    if (result === "default") {
+        console.log("用户未授权");
+        return;
+    }
+    // 同意通知
+    sendMesg();
+    });
+}
+
+function sendMesg() {
+    let notification = null;
+    const title = "通知测试";
+    const options = {
+    dir: "auto", // 文字方向
+    body: "制作者:hakiged", // 通知主体
+    data: {
+        originUrl: `https://github.com/haloged`,
+    },
+    requireInteraction: true, // 不自动关闭通知
+    image:
+        "https://static.codemao.cn/coco/player/unstable/BkDRSFYcs.image/jpeg?hash=FqA1bpy-_GYbPGR4ERAo6RL1ciat",
+    icon: "https://haloged.github.io/haloged1/logo001.ico", // 通知图标
+    };
+    notification = new Notification(title, options);
+    //setTimeout(notification.close.bind(notification), 4000);
+    notification.onclick = ({ currentTarget: { data } }) => {
+    notification.close();
+    window.focus();
+    window.location.href = data.originUrl;
+    };
+}
+    </script>
+</head>
+<body class="center">
+    <h1>发送通知测试</h1>
+    <button onclick="notify()">点击按钮发送通知</button>
+</body>
+</html>
